@@ -1,0 +1,157 @@
+<template>
+    <div>
+
+<el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="$store.state.bar.IsFoldLeftBar">
+    <!-- 展开侧边栏显示的图标 -->
+      <div class="big" v-show="!$store.state.bar.IsFoldLeftBar" @click="ToLogin"> 
+          <el-avatar icon="el-icon-user-solid" class="icon hvr-grow" ></el-avatar>
+      <span class="message">{{message}}</span>
+      </div>
+
+    
+    
+    <!-- 收起侧边栏显示的图标 -->
+    <div @click="ToLogin">
+      <el-avatar icon="el-icon-user-solid"  class="icon_small hvr-grow" v-show="$store.state.bar.IsFoldLeftBar"></el-avatar>
+    </div>
+  
+        <el-menu-item index="1" id="message" @click="ChangeRouterMes">
+    <i class="el-icon-menu"></i>
+    <span slot="title" >疫情信息</span>
+  </el-menu-item>
+     
+
+
+  <el-menu-item index="2" :disabled="false" id="myself" @click="ChangeRoutermy">
+    <i class="el-icon-document"></i>
+    <span slot="title" >我的</span>
+  </el-menu-item>
+
+  <el-submenu index="3">
+    <template slot="title">
+      <i class="el-icon-location"></i>
+      <span slot="title">管理员</span>
+    </template>
+    <div class="gly">
+      <el-menu-item index="1-1" @click="ChangeRouterCard">打卡管理</el-menu-item>
+      <el-menu-item index="1-2" @click="ChangeRouterquezhen">确诊患者管理</el-menu-item>
+      <el-menu-item index="1-3" @click="ChangeRouterzhiyu">治愈管理</el-menu-item>
+      <el-menu-item index="1-4" @click="ChangeRoutermijie">密切接触者管理</el-menu-item>
+      <el-menu-item index="1-5" @click="ChangeRoutersiwang">死亡管理</el-menu-item>
+      <el-menu-item index="1-6" @click="ChangeRoutersystem">系统用户管理</el-menu-item>
+    </div>
+
+   
+  </el-submenu>
+  
+
+
+
+  <el-menu-item index="4" id="set" @click="ChangeRouterSet">
+    <i class="el-icon-setting"></i>
+    <span slot="title" >设置</span>
+  </el-menu-item>
+</el-menu>
+ 
+    </div>
+</template>
+<script>
+export default {
+    data() {
+      return {
+        message:'请点击头像登录',
+      };
+    },
+    methods: {
+        ToLogin(){  //登录界面
+           this.$store.commit('bar/SHOWLOG');
+        },
+        ChangeRouterMes(){
+             this.$router.push({name:'china'})
+        },
+        ChangeRouterSet(){
+             this.$router.push({name:'set'})
+        },
+        ChangeRoutermy(){
+             this.$router.push({name:'myself'})
+        },
+        ChangeRouterpeople(){
+             this.$router.push({name:'people'})
+        },
+        ChangeRouterCard(){
+             this.$router.push({name:'cardmessage'})
+        },
+        ChangeRoutersystem(){
+             this.$router.push({name:'system'})
+        },
+        ChangeRoutersiwang(){
+             this.$router.push({name:'siwang'})
+        },
+        ChangeRoutermijie(){
+             this.$router.push({name:'mijie'})
+        },
+        ChangeRouterzhiyu(){
+             this.$router.push({name:'zhiyu'})
+        },
+        ChangeRouterquezhen(){
+             this.$router.push({name:'quezhen'})
+        },
+        
+    }
+
+}
+</script>
+<style lang="css" scoped>
+.bbox {
+  
+}
+.el-menu-vertical-demo {
+    float: left;
+    z-index: 2;
+ }
+     .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 12.5rem;
+    min-height: 100vh;
+    height: 100%;
+    background-image: linear-gradient(to bottom, #ececec, #e1e0f0, #d3d5f5, #c1cafa, #abc1ff);
+  }
+  .el-menu--collapse {
+    height: 100%;
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom, #ececec, #e1e0f0, #d3d5f5, #c1cafa, #abc1ff);
+  }
+  .big {
+    position: relative;
+  }
+  .gly {
+    background-color: #d3d5f5;
+  }
+  .icon {
+    cursor:pointer;
+    margin-top:  3.25rem;
+    margin-left: 3.8rem;
+    margin-bottom: 4rem;
+    height: 5rem;
+    width: 5rem;
+    font-size: 2rem;
+    line-height: 5rem;
+  }
+  .message {
+     position: absolute;
+     top:80%;
+     left:50%;
+     transform: translate(-50%,-50%);
+     font-size: 1rem;
+     width: 100%;
+     text-align: center;
+  }
+  .icon_small {
+    cursor:pointer;
+     margin-top: 1rem;
+     margin-left: 1rem;
+     margin-bottom:1rem;
+     height: 2rem;
+     width: 2rem;
+     line-height: 2rem;
+  }
+</style>

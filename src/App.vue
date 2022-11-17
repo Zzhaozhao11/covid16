@@ -1,28 +1,40 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <reglog></reglog>
+    <LeftBarVue></LeftBarVue>
+    <div class="right">
+    <TopBarVue></TopBarVue>
+      <div class="main">
+         <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+//引入组件
+import LeftBarVue from './components/LeftBar.vue';
+import TopBarVue from './components/TopBar.vue';
+import reglog from './components/reg&log';
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    LeftBarVue,TopBarVue,reglog
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html {
+  font-size: 16px;
+  background-color: rgb(255,246,250);
+  overflow: hidden;
 }
+#app {
+  display: flex;
+}
+   .right {
+    width: 100%;
+    min-height: 100vh;
+   }
 </style>
