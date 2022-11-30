@@ -69,4 +69,9 @@ export default {
   cursor: pointer;
   box-shadow: 0 0 1.875rem rgba(0, 0, 0, .2);
 }
+.hhh {
+  height: 300px;
+  width: 500px;
+  background-color: red;
+}
 </style>

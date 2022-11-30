@@ -2,7 +2,7 @@
     <div class="box">
         <card class="card"></card>
         <div class="right">
-            <myinf class="myinf"></myinf>
+            <myinf class="myinf" ></myinf>
             
                 <transition class="animate__animated"
         enter-active-class="animate__bounceIn"

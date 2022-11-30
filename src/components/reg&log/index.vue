@@ -9,6 +9,7 @@
                 <register class="reg" v-show="$store.state.bar.Isreg"></register>
                 <span class="close el-icon-close hvr-grow" @click="ToLogin"></span>
             </div>
+            
         </div>
         </transition>
       

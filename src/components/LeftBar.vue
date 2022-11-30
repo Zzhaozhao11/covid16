@@ -56,14 +56,28 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
     data() {
       return {
-        message:'请点击头像登录',
       };
     },
     methods: {
         ToLogin(){  //登录界面
+          if(this.IsLogin){
+            this.$confirm('检测到您已登录账号，是否退出？', '退出登录', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '确认退出',
+          cancelButtonText: '放弃'
+        }).then(()=>{
+          this.$store.commit('myself/CHANGELOGIN');
+          this.$store.commit('myself/SETUSERNAME','');
+          this.$message({
+            type: 'success',
+            message: '退出成功'
+          })
+        })
+          }else
            this.$store.commit('bar/SHOWLOG');
         },
         ChangeRouterMes(){
@@ -97,7 +111,16 @@ export default {
              this.$router.push({name:'quezhen'})
         },
         
-    }
+    },
+    computed:{
+       ...mapState('myself',['IsLogin','Username']),
+       message(){
+          if(this.IsLogin===true){
+             return `欢迎您! ${this.Username}`;
+          }else
+          return '请点击头像登录';
+       },
+    },
 
 }
 </script>
