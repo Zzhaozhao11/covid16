@@ -14,16 +14,14 @@
   <el-form-item label="手机号" prop="phone">
     <el-input v-model="ruleForm.phone"></el-input>
   </el-form-item>
-  <el-form-item label="公司职位" prop="company">
-    <el-select v-model="ruleForm.company" placeholder="请选择活动区域">
-      <el-option label="ceo" value="ceo"></el-option>
-      <el-option label="领导" value="lingdao"></el-option>
-    </el-select>
+  <el-form-item label="公司" prop="company">
+    <el-input v-model="ruleForm.company"></el-input>
   </el-form-item>
   <el-form-item label="权限" prop="power">
     <el-radio-group v-model="ruleForm.power">
       <el-radio label="普通用户"></el-radio>
       <el-radio label="管理员"></el-radio>
+      <el-radio label="超级管理员"></el-radio>
     </el-radio-group>
   </el-form-item>
   <el-form-item>
@@ -38,6 +36,7 @@
     </div>
 </template>
 <script>
+import throttle from 'lodash/throttle'
 export default {
     name: '',
     data() {
@@ -97,13 +96,23 @@ export default {
         }
       };
     },
+    mounted(){
+      window.addEventListener('keydown', (e) =>{  //键盘监听事件
+            if(!this.$store.state.bar.IsShowLog)  //只有在注册登录界面时才会触发
+            return;
+      if(e.key==='Enter'){   //当按下enter键时提交表单
+        if(this.$store.state.bar.Isreg){  //当处于注册界面时
+            this.submitForm('ruleForm');
+        }
+      } 
+    })
+    },
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.Addreg();
           } else {
-            console.log('error submit!!');
             return false;
           }
         });
@@ -115,8 +124,8 @@ export default {
         this.resetForm('ruleForm');
             this.$store.commit('bar/CHANGEREG');
         },
-      async Addreg(){
-        const res=await this.$http.login.ReqRegister(this.ruleForm).catch(err=>{
+        Addreg:throttle(async function(){
+          const res=await this.$http.login.ReqRegister(this.ruleForm).catch(err=>{
           this.$element.Message.error('服务器错误');
         });
         if(res.data&&res.data.code===200){
@@ -128,7 +137,7 @@ export default {
         }else{
           this.$element.Message.error('注册失败');
         }
-      }
+        },1500),
     }
 }
 </script>
@@ -138,12 +147,13 @@ export default {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding:0 3.125rem;
 }
-
 .title {
     margin-top: 1rem;
     font-size: 2.125rem;
     margin-bottom: 1rem;
+    
 }
 .demo-ruleForm {
   margin-right: 1rem;

@@ -56,12 +56,10 @@ export default {
     methods:{
        async GetMyinf(){ //向服务器请求个人信息
             this.myinfIsLoading=true;
-            console.log(this.$store.state.myself.Username);
             const mes=await this.$http.login.ReqSelectByName(this.$store.state.myself.Username);
             if(!mes||mes.status!=200||mes.data.code!=200)
             return;
             this.myinfMess=mes.data.data[0];
-            console.log(this.myinfMess);
             this.myinfIsLoading=false;
         }
     },

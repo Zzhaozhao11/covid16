@@ -1,11 +1,12 @@
 import requests from '../request'
 //添加打卡信息
 export const reqAddCard=({name,location,health,temperature,clockDate,danger,contact,comments})=>{
+    console.log(name,location,health,temperature,clockDate,danger,contact,comments);
     return requests({
         url:'/clock/addClock',
         method:'get',
         params:{
-            Id:'',
+            Id:'1',
         name,location,health,temperature,clockDate,danger,contact,comments
         }
     })
@@ -23,12 +24,15 @@ export const reqGetCard=(pageSize,pageNum)=>{
 }
 
 //按名字检索打卡记录
-export const reqSearchCard=(pageSize,pageNum,param)=>{
+export const reqSearchCard=(pageSize,pageNum,name)=>{
     return requests({
         url:'/clock/selectClockByName',
         method:'post',
         data:{
-            pageSize,pageNum,param
+            pageSize,pageNum,
+            param:{
+                name
+            }
         }
     })
 }

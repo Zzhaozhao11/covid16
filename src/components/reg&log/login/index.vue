@@ -11,6 +11,7 @@
     </div>
 </template>
 <script>
+import throttle from 'lodash/throttle'  //引入节流函数
 export default {
     name:'',
     data(){
@@ -19,17 +20,30 @@ export default {
             userid:''
         }
     },
+    mounted(){
+        window.addEventListener('keydown', (e) =>{  //键盘监听事件
+            if(!this.$store.state.bar.IsShowLog)  //只有在注册登录界面时才会触发
+            return;
+      if(e.key==='Enter'){   //当按下enter键时提交表单
+        if(!this.$store.state.bar.Isreg){  //当处于登录界面时
+            this.login();
+        }
+      } 
+    })
+    },
     methods:{
         ChangeReg(){
             this.$store.commit('bar/CHANGEREG');
         },
-        async login(){  //登录
-           const res= await this.$http.login.ReqLogin(this.userid,this.password);  //axios发送登录请求
-           if(res.data.code===200){  //登录成功
+        login:throttle(async function(){  //登录  节流
+            const res= await this.$http.login.ReqLogin(this.userid,this.password);  //axios发送登录请求
+            const power=await this.$http.login.ReqSelectByName(this.userid);
+            if(res.data.code===200&&power.data.code===200){  //登录成功
             this.$element.Message({
                 message: '登录成功',
                 type: 'success'
             })  
+            this.$store.commit('myself/SETPOWER',power.data.data[0].power);     
             this.$store.commit('bar/SHOWLOG');  //关闭登录界面
             this.$store.commit('myself/CHANGELOGIN');  //改变登录状态
             this.$store.commit('myself/SETUSERNAME',this.userid);   //向xuex仓库发送用户名
@@ -42,7 +56,7 @@ export default {
             this.userid='';
             this.$element.Message.error('登录失败');
            }
-        }
+        },3000),
     }
 }
 </script>

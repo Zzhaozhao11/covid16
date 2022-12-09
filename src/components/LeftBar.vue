@@ -4,7 +4,7 @@
 <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="$store.state.bar.IsFoldLeftBar">
     <!-- 展开侧边栏显示的图标 -->
       <div class="big" v-show="!$store.state.bar.IsFoldLeftBar" @click="ToLogin"> 
-          <el-avatar icon="el-icon-user-solid" class="icon hvr-grow" ></el-avatar>
+          <el-avatar icon="el-icon-user-solid" :src="isShowPic" class="icon hvr-grow" ></el-avatar>
       <span class="message">{{message}}</span>
       </div>
 
@@ -12,7 +12,7 @@
     
     <!-- 收起侧边栏显示的图标 -->
     <div @click="ToLogin">
-      <el-avatar icon="el-icon-user-solid"  class="icon_small hvr-grow" v-show="$store.state.bar.IsFoldLeftBar"></el-avatar>
+      <el-avatar icon="el-icon-user-solid" :src="isShowPic"  class="icon_small hvr-grow" v-show="$store.state.bar.IsFoldLeftBar"></el-avatar>
     </div>
   
         <el-menu-item index="1" id="message" @click="ChangeRouterMes">
@@ -34,11 +34,10 @@
     </template>
     <div class="gly">
       <el-menu-item index="1-1" @click="ChangeRouterCard">打卡管理</el-menu-item>
+      <el-menu-item index="1-4" @click="ChangeRoutermijie">密切接触者管理</el-menu-item>
       <el-menu-item index="1-2" @click="ChangeRouterquezhen">确诊患者管理</el-menu-item>
       <el-menu-item index="1-3" @click="ChangeRouterzhiyu">治愈管理</el-menu-item>
-      <el-menu-item index="1-4" @click="ChangeRoutermijie">密切接触者管理</el-menu-item>
       <el-menu-item index="1-5" @click="ChangeRoutersiwang">死亡管理</el-menu-item>
-      <el-menu-item index="1-6" @click="ChangeRoutersystem">系统用户管理</el-menu-item>
     </div>
 
    
@@ -47,9 +46,9 @@
 
 
 
-  <el-menu-item index="4" id="set" @click="ChangeRouterSet">
+  <el-menu-item index="4" id="set" @click="ChangeRoutersystem">
     <i class="el-icon-setting"></i>
-    <span slot="title" >设置</span>
+    <span slot="title">超级管理员</span>
   </el-menu-item>
 </el-menu>
  
@@ -70,8 +69,10 @@ export default {
           confirmButtonText: '确认退出',
           cancelButtonText: '放弃'
         }).then(()=>{
-          this.$store.commit('myself/CHANGELOGIN');
-          this.$store.commit('myself/SETUSERNAME','');
+          this.$store.commit('myself/EXITLOGIN');  //修改vuex仓库
+          this.$router.replace({
+            name:'china'
+          })  
           this.$message({
             type: 'success',
             message: '退出成功'
@@ -120,6 +121,12 @@ export default {
           }else
           return '请点击头像登录';
        },
+       isShowPic(){  //是否显示头像
+        if(this.$store.state.myself.IsLogin)
+           return 'https://img1.baidu.com/it/u=3714444538,3832091059&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'; 
+           else
+           return '';
+        },
     },
 
 }

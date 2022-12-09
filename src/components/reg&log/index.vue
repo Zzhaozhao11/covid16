@@ -3,7 +3,7 @@
         <transition class="animate__animated"
         enter-active-class="animate__animated animate__fadeInDown"
     leave-active-class="animate__animated animate__fadeOutDown">
-            <div class="shelter trans" v-show="$store.state.bar.IsShowLog">
+            <div class="shelter trans" v-show="$store.state.bar.IsShowLog" ref="box">
             <div class="box">
                 <login class="login" v-show="!$store.state.bar.Isreg"></login>
                 <register class="reg" v-show="$store.state.bar.Isreg"></register>
@@ -27,6 +27,15 @@ export default {
         return{
           
         }
+    },
+    mounted(){
+        window.addEventListener('keydown', (e) =>{  //键盘监听事件
+            if(!this.$store.state.bar.IsShowLog)  //只有在注册登录界面时才会触发
+            return;
+      if (e.key == 'Escape') {  //当按下esc键时退出
+            this.ToLogin();
+      } 
+    })
     },
     methods: {
         ToLogin() {  //登录界面

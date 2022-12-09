@@ -27,6 +27,7 @@ request.interceptors.response.use(res=>{
     nprogress.done();
     return res;
 },err=>{
+    alert(err.message);
     return new Promise.reject(err);
 })
 

@@ -25,7 +25,7 @@ export const ReqLogin=(username,password)=>{
 
 
 //修改
-export const ReqMod=({id,username,password,phone,company,power})=>{
+export const ReqMod=(id,{username,password,phone,company,power})=>{
     return requests({
         url:"/user/mod",
         method:"post",
@@ -47,6 +47,28 @@ export const ReqSelectByName=(username)=>{
             param:{
                 username
             }
+        }
+    })
+}
+
+//删除用户
+export const ReqDelete=(id)=>{
+    return requests({
+        url:'/user/delete',
+        method:'get',
+        params:{
+            id
+        }
+    })
+}
+
+//查询所有用户
+export const ReqSelectAllUser=(pageSize,pageNum)=>{
+    return requests({
+        url:'/user/selectAllUser',
+        method:'post',
+        data:{
+            pageSize,pageNum
         }
     })
 }

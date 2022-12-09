@@ -6,7 +6,6 @@ export const reqAddBasic=({name,personId,age,gender,houseAddress,phone})=>{
         url: '/basic/addBasic',
         method: 'get',
     params: {
-        Id:'',
       name,personId,age,gender,houseAddress,phone
     }
     })
@@ -166,9 +165,9 @@ export const ReqGetInformationMessage=(id)=>{
 
 
 //添加密接信息
-export const ReqAddInformation=(basicId,source,divideAddress,divideDate)=>{
+export const ReqAddInformation=(basicId,{source,divideAddress,divideDate})=>{
     return requests({
-        url:'/information/addInformation',
+        url:'/information/addInformation'   ,
         method:'get',
         params:{
             basicId,source,divideAddress,divideDate
@@ -201,12 +200,13 @@ export const ReqSelectPatientByName=(name)=>{
 
 
 //添加病人详细信息
-export const ReqAddManage=({inDate,symptoms,condition,comments,source,hospital})=>{
+export const ReqAddManage=(id,{inDate,symptoms,condition,comments,source,hospital})=>{
     return requests({
         url:'/patient/addManage',
         method:'get',
         params:{
-            inDate,symptoms,condition,comments,source,hospital
+            basicId:id,
+            inDate,source,symptoms,condition,comments,hospital
         }
     })
 }

@@ -12,3 +12,5 @@ export {admin,card,login};
 export const reqGetWorldMap=()=>mapreq({url:'/json/world.json',method:'get'});
 export const reqGetTianjinMap=()=>mapreq({url:'/json/tianjin.json'});
 export const reqGetChinaMap=()=>mapreq({url:'/json/china.json'});
+//获取地图信息
+export const reqGetWorldMapMes=()=>requests({url:'/echarts/epidemic',method:'get'});

@@ -1,6 +1,11 @@
 //引入vuerouter
-import VueRouter from 'vue-router'
-
+import VueRouter from 'vue-router';
+//引入路由信息
+import routes from './routes';
+//引入elementui消息提示
+import { Message } from 'element-ui';
+//引入vuex仓库
+import store from '@/store';
 //重写push/replace
 let originPush=VueRouter.prototype.push;
 let originReplace=VueRouter.prototype.replace;
@@ -18,79 +23,30 @@ VueRouter.prototype.replace=function(location,resolve,reject){
         originReplace.call(this,location,()=>{},()=>{});
     }
 }
-
-export default new VueRouter({
-    routes:[
-        {
-           path:'/',
-           redirect:'/message'
-        },
-        {
-            path: '/message',
-            redirect: '/message/china'
-        },
-        {
-            path:'/message',
-            name:'message',
-            component:()=>import('../pages/message'),
-            children:[
-               {
-                path:'world',
-                name:'world',
-                component:()=>import('../pages/message/world')
-               },
-               {
-                path:'china',
-                name:'china',
-                component:()=>import('../pages/message/china')
-               },
-               {
-                path:'tianjin',
-                name:'tianjin',
-                component:()=>import('../pages/message/tianjin')
-               }
-            ],
-        },
-        {
-            path:'/myself',
-            name:'myself',
-            component:()=>import('../pages/myself')
-        },
-        {
-            path:'/set',
-            name:'set',
-            component:()=>import('../pages/set')
-        },
-        {
-            path:'/adminquezhen',
-            name:'quezhen',
-            component:()=>import('../pages/admin/manage/quezhen')
-        },
-        {
-            path:'/adminzhiyu',
-            name:'zhiyu',
-            component:()=>import('../pages/admin/manage/zhiyu')
-        },
-        {
-            path:'/adminsiwang',
-            name:'siwang',
-            component:()=>import('../pages/admin/manage/siwang')
-        },
-        {
-            path:'/adminmijie',
-            name:'mijie',
-            component:()=>import('../pages/admin/manage/mijie')
-        },
-        {
-            path:'/adminsystem',
-            name:'system',
-            component:()=>import('../pages/admin/manage/system')
-        },
-        {
-            path:'/admincard',
-            name:'cardmessage',
-            component:()=>import('../pages/admin/cardmessage')
-        },
-
-    ]
+const router=new VueRouter({
+    routes
 })
+//全局路由守卫
+router.beforeEach((to,from,next)=>{
+    let topath=to.path;
+    if(topath.includes('message')){//首页直接放行
+        next();
+        return;
+    }   
+    let IsLogin=store.state.myself.IsLogin;
+    if(!IsLogin&&(topath.includes('myself')||topath.includes('admin'))){  //没有登录时
+        Message.error('请先登录');
+        return;
+    }
+    let power=store.state.myself.power;  //权限
+    if(power=='超级管理员'){  //超级管理员直接放行
+        next();
+    }else if(power=='管理员'&&!topath.includes('adminsystem')){  //普通管理员
+         next();
+    }else if(power=='普通用户'&&topath.includes('myself')){
+        next();
+    }else
+    Message.error('权限不足!');
+})
+//对外暴露
+export default router;
