@@ -15,8 +15,7 @@ Vue.use(ElementUI);
 //引入hover.css
 import "hover.css"
 //引入animate.css
-import animate from "animate.css"
-Vue.use(animate);
+import  "animate.css"
 //引入echarts
 import * as echarts from "echarts";
 //引入封装axios的api

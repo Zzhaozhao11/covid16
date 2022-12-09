@@ -32,7 +32,7 @@
           </el-table-column> -->
         </el-table>
         <!-- 分页器 -->
-        <el-pagination :current-page="page" :page-size="limit" :page-sizes="[3, 5, 7,1]" style="padding: 20px 0;"
+        <el-pagination :current-page="page" :page-size="limit" :page-sizes="[7, 3, 5]" style="padding: 20px 0;"
           layout="prev, pager, next, jumper, ->, sizes, total" @current-change="getUsers"
           @size-change="handleSizeChange" />
       </div>

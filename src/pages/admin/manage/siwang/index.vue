@@ -24,31 +24,26 @@
         <el-table-column prop="deadDate" label="死亡时间" align="center"/>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="success" @click="showMes(scope.row)">治疗信息</el-button>
-            <el-button size="mini"  @click="showMes(scope.row)">检测历史</el-button>
+            <!-- <el-button size="mini" type="success" @click="showjiance(scope.row)">治疗信息</el-button> -->
+            <el-button size="mini"  @click="showjiance(scope.row)">检测历史</el-button>
           </template>
         </el-table-column>
       </el-table>
       <!-- 分页器 -->
-      <el-pagination :current-page="page" :page-size="limit" :page-sizes="[3, 5, 7]" style="padding: 20px 0;"
+      <el-pagination :current-page="page" :page-size="limit" :page-sizes="[7, 3, 5]" style="padding: 20px 0;"
         layout="prev, pager, next, jumper, ->, sizes, total" @current-change="getUsers"
         @size-change="handleSizeChange" />
     </div>
 
 
-    <el-dialog title="详细信息" :visible.sync="dialogVisible" width="30%" top="20rem">
-      <el-descriptions direction="vertical" :column="4" border>
-    <el-descriptions-item label="治疗医院">{{mes.comments}}</el-descriptions-item>
-    <el-descriptions-item label="是否重症">{{mes.hospital}}</el-descriptions-item>
-    <el-descriptions-item label="入院日期">{{mes.inDate}}</el-descriptions-item>
-    <el-descriptions-item label="死亡日期">{{mes.deadDate}}</el-descriptions-item>
-    <el-descriptions-item label="感染源">{{mes.source}}</el-descriptions-item>
-    <el-descriptions-item label="症状">{{mes.symptoms}}</el-descriptions-item>
-    <el-descriptions-item label="备注" v-show="mes.condition">{{mes.condition}}</el-descriptions-item>
-
-</el-descriptions>
+    <el-dialog title="检测历史" :visible.sync="dialogjianceVisible" width="30%" top="20rem">
+      <el-table :data="mes">
+    <el-table-column property="detectionDate" label="检测日期" align="center"></el-table-column>
+    <el-table-column property="nuclein" label="核酸检测结果" align="center"></el-table-column>
+    <el-table-column property="ct" label="ct" align="center"></el-table-column>
+  </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">关闭</el-button>
+        <el-button type="primary" @click=" dialogjianceVisible = false">关闭</el-button>
       </span>
     </el-dialog>
   </div>
@@ -72,7 +67,7 @@ export default {
       limit: 3, // 每页数量
       user: {}, // 当前要操作的user
       loading: false, // 是否正在提交请求中
-      dialogVisible: false, //显示查看详情
+       dialogjianceVisible: false, //显示查看详情
       mes: {
 
       }
@@ -160,14 +155,18 @@ export default {
       this.limit = pageSize
       this.getUsers()
     },
-    async showMes(row) {  //查看详细信息
-      let res = await this.$http.admin.ReqGetCureMessage(row.id);
+    async showjiance(row) {  //查看详细信息
+      let res = await this.$http.admin.ReqGetDetetion(row.id);
+      console.log(res.data);
       if(res.data.code!=200){
         this.$message.error('错误');
         return;
+      }else if(!res.data.data){
+        this.$message.error('无数据');
+        return;
       }
       this.mes=res.data.data;
-      this.dialogVisible=true;
+      this. dialogjianceVisible=true;
     }
   }
 }

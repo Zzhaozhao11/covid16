@@ -9,8 +9,8 @@ import * as login from './mod/login';
 export {admin,card,login};
 
 //地图相关
-export const reqGetWorldMap=()=>mapreq({url:'/json/world.json',method:'get'});
-export const reqGetTianjinMap=()=>mapreq({url:'/json/tianjin.json'});
-export const reqGetChinaMap=()=>mapreq({url:'/json/china.json'});
+export const reqGetWorldMap=()=>mapreq({url:'json/world.json',method:'get'});
+export const reqGetTianjinMap=()=>mapreq({url:'json/tianjin.json'});
+export const reqGetChinaMap=()=>mapreq({url:'json/china.json'});
 //获取地图信息
 export const reqGetWorldMapMes=()=>requests({url:'/echarts/epidemic',method:'get'});

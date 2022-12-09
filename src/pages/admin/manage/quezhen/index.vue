@@ -23,14 +23,20 @@
 
       <el-table-column type="name" prop="name" label="姓名" width="90" align="center" />
 
-      <el-table-column prop="personId" label="身份证号" />
+      <el-table-column prop="personId" label="身份证号" align="center"/>
       <el-table-column prop="gender" label="性别" width="50" />
-      <el-table-column prop="houseAddress" label="住宅"  />
+      <el-table-column prop="houseAddress" label="住宅"  align="center"/>
 
-      <el-table-column prop="inDate" label="住院时间" />
-      <el-table-column prop="source" label="感染来源" />
-
-      <el-table-column label="操作" width="300" align="center">
+      <el-table-column prop="inDate" label="住院时间" align="center"/>
+      <el-table-column prop="source" label="感染来源" align="center"/>
+      <el-table-column label="操作" align="center" width="350px">
+        <template slot-scope="scope">
+          <el-button size="mini" type="info" plain @click="showMes(scope.row)">查看详情</el-button>
+          <el-button size="mini"  @click="showjiancelishi(scope.row)">检测历史</el-button>
+          <el-button size="mini" type="primary" plain  @click="showjiance(scope.row)">添加检测信息</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="变动"  align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="success" round  @click="showMsBox(scope.row,1)">治愈</el-button>
           <el-button size="mini" type="danger" round @click="showMsBox(scope.row,2)">死亡</el-button>
@@ -38,9 +44,9 @@
       </el-table-column>
     </el-table>
     <!-- 分页器 -->
-    <el-pagination :current-page="page" :page-size="limit" :page-sizes="[3, 5, 7]" style="padding: 20px 0;"
+    <el-pagination :current-page="page" :page-size="limit" :page-sizes="[5,3,7]" style="padding: 20px 0;"
       layout="prev, pager, next, jumper, ->, sizes, total" @current-change="getUsers" @size-change="handleSizeChange" />
-    <!-- 对话框的结构 -->
+    <!-- 添加用户的对话框 -->
     <el-dialog :title="user.id ? '修改用户' : '添加用户'" :visible.sync="dialogUserVisible">
       <!-- 添加用户 -->
       <el-form :rules="adduserRules" label-width="80px" ref="adduserForm" :model="adduser" class="elform">
@@ -107,8 +113,57 @@
         </div>
       </el-dialog>
     </el-dialog>
+   
+    <!-- 查看详细信息的对话框 -->
+    <el-dialog title="详细信息" :visible.sync="dialogVisible" width="30%" top="20rem">
+      <el-descriptions direction="vertical" :column="3" border>
+    <el-descriptions-item label="治疗医院">{{mes.comments}}</el-descriptions-item>
+    <el-descriptions-item label="是否重症">{{mes.hospital}}</el-descriptions-item>
+    <el-descriptions-item label="入院日期">{{mes.inDate}}</el-descriptions-item>
+    <el-descriptions-item label="感染源">{{mes.source}}</el-descriptions-item>
+    <el-descriptions-item label="症状">{{mes.symptoms}}</el-descriptions-item>
+    <el-descriptions-item label="备注" v-show="mes.condition">{{mes.condition}}</el-descriptions-item>
 
-
+</el-descriptions>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
+    <!-- 添加检测信息的对话框 -->
+    <el-dialog title="添加检测信息" :visible.sync="dialogJianCeVisible" width="30%" top="15rem" >
+      <el-form :rules="addjianceRules" label-width="150px" ref="addjianceForm" :model="jiance" class="jiance">
+        <el-form-item label="检测时间" prop="detectionDate">
+              <el-date-picker 
+              type="date" placeholder="选择日期" 
+              v-model="jiance.detectionDate"
+              value-format="yyyy-MM-dd"></el-date-picker>
+          </el-form-item>
+          <el-form-item label="核酸检测结果" prop="nuclein">
+            <el-radio-group v-model="jiance.nuclein">
+              <el-radio label="阴性"></el-radio>
+              <el-radio label="阳性"></el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="ct检测" prop="ct">
+            <el-input v-model="jiance.ct"></el-input>
+          </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+          <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="addjiance">确 定</el-button>
+        </div>
+    </el-dialog>
+    <!-- 检测历史 -->
+    <el-dialog title="检测历史" :visible.sync="dialogjiancelishiVisible" width="30%" top="20rem">
+      <el-table :data="mes">
+    <el-table-column property="detectionDate" label="检测日期" align="center"></el-table-column>
+    <el-table-column property="nuclein" label="核酸检测结果" align="center"></el-table-column>
+    <el-table-column property="ct" label="ct" align="center"></el-table-column>
+  </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click=" dialogjianceVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
   
@@ -120,6 +175,11 @@ export default {
 
   data() {
     return {
+      jiance:{  //添加检测信息的表单
+        detectionDate:'',
+        nuclein:'',
+        ct:'',
+      },
       adduser: {  //添加用户的表单
         name: '',
         personId: '',
@@ -136,8 +196,16 @@ export default {
         condition: '',
         comments: '',
       },
+      mes:{  //详细信息
+
+      },
+      nowRowId:-1, //当前选中行的id
+      dialogjiancelishiVisible: false, //显示检测信息
+      dialogJianCeVisible:false, //添加检测信息是否展示
       innerVisible: false,  //内部显示
       listLoading: false, // 是否显示列表加载的提示
+      dialogVisible:false, //详情
+      dialogUserVisible: false, // 是否显示用户添加/修改的dialog
       tempSearchObj: { // 收集搜索条件输入的对象
         username: ''
       },
@@ -147,7 +215,6 @@ export default {
       page: 1, // 当前页码
       limit: 3, // 每页数量
       user: {}, // 当前要操作的user
-      dialogUserVisible: false, // 是否显示用户添加/修改的dialog
       loading: false, // 是否正在提交请求中
       adduserRules: {  //添加用户的验证规则
         name: [{ required: true, message: '请填写姓名', trigger: 'blur' }],
@@ -164,6 +231,11 @@ export default {
         hospital: [{ required: true, message: '请填写诊治医院', trigger: 'blur' }],
         condition: [{ required: true, message: '请填写是否为重症', trigger: 'blur' }],
         comments: [{ required: false, message: '请填写备注', trigger: 'blur' }],
+      },
+      addjianceRules:{
+        detectionDate: [{ required: true, message: '请填写检测时间', trigger: 'blur' }],
+        nuclein: [{ required: true, message: '请填写核算检测结果', trigger: 'blur' }],
+        ct: [{ required: true, message: '请填写ct检测结果', trigger: 'blur' }],
       }
     }
   },
@@ -180,9 +252,18 @@ export default {
     handleSelectionChange(selection) {
       this.selectedIds = selection.map(item => item.id)
     },
-    cellClick(index,row){
-      console.log(index);
-      console.log(row);
+    async showjiancelishi(row) {  //查看检测信息
+      let res = await this.$http.admin.ReqGetDetetion(row.id);
+      console.log(res.data);
+      if(res.data.code!=200){
+        this.$message.error('错误');
+        return;
+      }else if(!res.data.data){
+        this.$message.error('无数据');
+        return;
+      }
+      this.mes=res.data.data;
+      this. dialogjiancelishiVisible=true;
     },
     /* 
     根据输入进行搜索
@@ -264,7 +345,19 @@ export default {
       this.selectedIds = []
       
     },
-
+    async showMes(row) {  //查看详细信息
+      let res = await this.$http.admin.ReqGetManage(row.id);
+      if(res.data.code!=200){
+        this.$message.error('错误');
+        return;
+      }
+      this.mes=res.data.data;
+      this.dialogVisible=true;
+    },
+    showjiance(row){
+      this.dialogJianCeVisible=true;
+      this.nowRowId=row.id;
+    },
     /* 
     处理pageSize发生改变的监听回调
     */
@@ -279,9 +372,11 @@ export default {
     cancel() {
       this.dialogUserVisible = false
       this.innerVisible = false;
+      this.dialogJianCeVisible=false;
       this.user = {};
       this.adduser = {};
       this.binghuan = {};
+      this.jiance={};
     },
     
     addUserNext() {  //添加用户的下一步
@@ -302,15 +397,37 @@ export default {
         }
       });
     },
+    addjiance(){ //添加检测的下一步
+      this.$refs.addjianceForm.validate((valid) => {
+        if (valid) {
+          this.AddJIANCE();
+        } else {
+          return false;
+        }
+      });
+    },
+    async AddJIANCE(){ //添加检测发送axios请求
+      const res = await this.$http.admin.ReqInsertDetetion(this.nowRowId,this.jiance);
+      if (res.data.code!=200) {  //错误情况
+        this.$message.error('错误！');
+        return;
+      }
+      this.$message({ message: '成功添加', type: 'success' });
+      this.nowRowId=-1;
+      this.cancel(); // 关闭添加界面
+
+    },
     async AddUserAndBinghuan() {
       const res = await this.$http.admin.reqAddBasic(this.adduser);
-      if (!res.data.data.id) {  //错误情况
+      console.log(res);
+      if (res.data.code!=200) {  //错误情况
         this.$message.error('错误！');
         return;
       }
       const id = res.data.data.id;
       const lsres = await this.$http.admin.ReqAddManage(id, this.binghuan);
-      if (!lsres.data.code!=200) {  //错误情况
+      console.log(lsres);
+      if (lsres.data.code!=200) {  //错误情况
         this.$message.error('错误！');
         return;
       }
@@ -365,12 +482,15 @@ export default {
   }
 }
 </script>
-<style lang="css">
+<style lang="css" scoped>
 .app-container {
   margin: 1rem 2rem;
 }
 
 .elform {
   margin: 0 5rem;
+}
+::v-deep .jiance {
+  margin-right: 5rem !important;
 }
 </style>

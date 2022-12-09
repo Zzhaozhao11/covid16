@@ -6,6 +6,7 @@ import nprogress from "nprogress";
 import "nprogress/nprogress.css"
 let requests=axios.create({
     timeout:1000,
+    baseURL:'./',
 });
 // 添加请求拦截器
 requests.interceptors.request.use((config)=> {

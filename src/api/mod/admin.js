@@ -108,9 +108,10 @@ export const ReqToDead=(basicId,deadDate)=>{
 }
 
 //添加检测信息
-export const ReqInsertDetetion=(basicId,detectionDate,nuclein,ct)=>{
+export const ReqInsertDetetion=(basicId,{detectionDate,nuclein,ct})=>{
+    console.log(basicId,detectionDate,nuclein,ct);
     return requests({
-        url:'/detection/insertDetetion',
+        url:'/detection/insertDetection',
         method:'get',
         params:{
             basicId,detectionDate,nuclein,ct
@@ -121,7 +122,7 @@ export const ReqInsertDetetion=(basicId,detectionDate,nuclein,ct)=>{
 //查看检测信息
 export const ReqGetDetetion=(id)=>{
     return requests({
-        url:'/detection/getDetetion',
+        url:'/detection/getDetection',
         method:'get',
         params:{
             id
@@ -211,3 +212,13 @@ export const ReqAddManage=(id,{inDate,symptoms,condition,comments,source,hospita
     })
 }
 
+//查看病人详细信息
+export const ReqGetManage=(id)=>{
+    return requests({
+        url:'/patient/getManage',
+        method:'get',
+        params:{
+            id
+        }
+    })
+}

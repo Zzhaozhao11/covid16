@@ -24,6 +24,7 @@ VueRouter.prototype.replace=function(location,resolve,reject){
     }
 }
 const router=new VueRouter({
+    mode:'hash', //hash模式
     routes
 })
 //全局路由守卫

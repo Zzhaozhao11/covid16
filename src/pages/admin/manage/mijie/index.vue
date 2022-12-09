@@ -30,7 +30,7 @@
       </el-table-column>
     </el-table>
     <!-- 分页器 -->
-    <el-pagination :current-page="page" :page-size="limit" :page-sizes="[3, 5, 7]" style="padding: 20px 0;"
+    <el-pagination :current-page="page" :page-size="limit" :page-sizes="[7, 3, 5]" style="padding: 20px 0;"
       layout="prev, pager, next, jumper, ->, sizes, total" @current-change="getUsers" @size-change="handleSizeChange" />
     <!-- 对话框的结构 -->
     <el-dialog :title="user.id ? '修改用户' : '添加用户'" :visible.sync="dialogUserVisible">

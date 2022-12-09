@@ -123,10 +123,10 @@ export default {
         // 获取数据
         this.$http.reqGetWorldMapMes().then(result => {
           let res = result.data;
-          console.log(res.data.areaTree[2].children[23].children);
-          this.total = res.data.chinaTotal.total
-          this.today = res.data.chinaTotal.today
-          this.extData = res.data.chinaTotal.extData
+          console.log(res.data.areaTree[2].children[23]);
+          this.total = res.data.areaTree[2].children[23].total
+          this.today = res.data.areaTree[2].children[23].today
+          this.extData = res.data.areaTree[2].children[23].extData
           let data = []
           res.data.areaTree[2].children[23].children.forEach(item => {
             data.push({ name: item.name, value: item.total.confirm - item.total.dead - item.total.heal })
