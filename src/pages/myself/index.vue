@@ -54,14 +54,14 @@ export default {
     }
     img {
         margin-top: 3.125rem;
-        height: 35rem;
+        height: 55vh;
         width: 100%;
         border-radius: .25rem;
 
     }
     .form {
         margin-top: 3.125rem;
-        height: 35rem;
+        height: 55vh;
         padding:3.125rem;
         box-shadow: 0 0 1.875rem rgba(0, 0, 0, .2);
         overflow-y: scroll;

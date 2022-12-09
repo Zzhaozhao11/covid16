@@ -37,7 +37,7 @@
     </div>
 
 
-    <el-dialog title="详细信息" :visible.sync="dialogVisible" width="30%" top="20rem">
+    <el-dialog title="详细信息" :visible.sync="dialogVisible" width="30%">
       <el-descriptions direction="vertical" :column="4" border>
     <el-descriptions-item label="治疗医院">{{mes.comments}}</el-descriptions-item>
     <el-descriptions-item label="是否重症">{{mes.hospital}}</el-descriptions-item>
@@ -56,7 +56,6 @@
 </template>
   
 <script lang="js">
-import cloneDeep from 'lodash/cloneDeep'
 
 export default {
   name: 'AclUserList',

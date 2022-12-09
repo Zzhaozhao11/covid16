@@ -35,11 +35,6 @@ export default [
         component:()=>import('../pages/myself'),
     },
     {
-        path:'/set',
-        name:'set',
-        component:()=>import('../pages/set')
-    },
-    {
         path:'/adminquezhen',
         name:'quezhen',
         component:()=>import('../pages/admin/manage/quezhen')

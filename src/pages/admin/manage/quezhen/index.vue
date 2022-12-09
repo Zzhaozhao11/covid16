@@ -115,7 +115,7 @@
     </el-dialog>
    
     <!-- 查看详细信息的对话框 -->
-    <el-dialog title="详细信息" :visible.sync="dialogVisible" width="30%" top="20rem">
+    <el-dialog title="详细信息" :visible.sync="dialogVisible" width="30%" >
       <el-descriptions direction="vertical" :column="3" border>
     <el-descriptions-item label="治疗医院">{{mes.comments}}</el-descriptions-item>
     <el-descriptions-item label="是否重症">{{mes.hospital}}</el-descriptions-item>
@@ -130,7 +130,7 @@
       </span>
     </el-dialog>
     <!-- 添加检测信息的对话框 -->
-    <el-dialog title="添加检测信息" :visible.sync="dialogJianCeVisible" width="30%" top="15rem" >
+    <el-dialog title="添加检测信息" :visible.sync="dialogJianCeVisible" width="30%"  >
       <el-form :rules="addjianceRules" label-width="150px" ref="addjianceForm" :model="jiance" class="jiance">
         <el-form-item label="检测时间" prop="detectionDate">
               <el-date-picker 
@@ -154,7 +154,7 @@
         </div>
     </el-dialog>
     <!-- 检测历史 -->
-    <el-dialog title="检测历史" :visible.sync="dialogjiancelishiVisible" width="30%" top="20rem">
+    <el-dialog title="检测历史" :visible.sync="dialogjiancelishiVisible" width="30%" >
       <el-table :data="mes">
     <el-table-column property="detectionDate" label="检测日期" align="center"></el-table-column>
     <el-table-column property="nuclein" label="核酸检测结果" align="center"></el-table-column>

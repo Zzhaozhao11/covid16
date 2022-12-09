@@ -36,7 +36,7 @@
     </div>
 
 
-    <el-dialog title="检测历史" :visible.sync="dialogjianceVisible" width="30%" top="20rem">
+    <el-dialog title="检测历史" :visible.sync="dialogjianceVisible" width="30%" >
       <el-table :data="mes">
     <el-table-column property="detectionDate" label="检测日期" align="center"></el-table-column>
     <el-table-column property="nuclein" label="核酸检测结果" align="center"></el-table-column>

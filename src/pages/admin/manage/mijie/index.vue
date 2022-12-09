@@ -89,7 +89,7 @@
     </el-dialog>
 
   <!-- 查看详情 -->
-    <el-dialog title="详细信息" :visible.sync="MesVisible" width="30%" top="20rem">
+    <el-dialog title="详细信息" :visible.sync="MesVisible" width="30%" >
       <el-descriptions direction="vertical" :column="4" border>
     <el-descriptions-item label="ID">{{mes.basicId||"未知"}}</el-descriptions-item>
     <el-descriptions-item label="隔离地址">{{mes.divideAddress}}</el-descriptions-item>
