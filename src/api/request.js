@@ -4,7 +4,8 @@ import axios from "axios"
 import nprogress from "nprogress";
 //引入进度条样式
 import "nprogress/nprogress.css"
-
+//引入vuex仓库
+import store from "@/store";
 
 let request=axios.create({
     baseURL:'http://127.0.0.1',
@@ -15,6 +16,7 @@ let request=axios.create({
 request.interceptors.request.use(config=>{
     // 在发送请求之前做些什么
     nprogress.start();
+    config.headers.token=store.state.myself.token||'';
      return config;
 },err=>{
     // 对请求错误做些什么

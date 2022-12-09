@@ -23,6 +23,16 @@ export const ReqLogin=(username,password)=>{
     })
 }
 
+//验证token
+export const ReqVerifyToken=(token)=>{
+    return requests({
+        url:"/user/verifyToken",
+        method:"get",
+        params:{
+            token
+        }
+    })
+}
 
 //修改
 export const ReqMod=(id,{username,password,phone,company,power})=>{

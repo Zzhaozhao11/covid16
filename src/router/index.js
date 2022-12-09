@@ -28,15 +28,21 @@ const router=new VueRouter({
     routes
 })
 //全局路由守卫
-router.beforeEach((to,from,next)=>{
+router.beforeEach(async (to,from,next)=>{
+    try{
+        await store.dispatch('myself/VerifyToken');
+    }catch(err){
+
+    }
     let topath=to.path;
+    let IsLogin=store.state.myself.IsLogin;
     if(topath.includes('message')){//首页直接放行
         next();
         return;
-    }   
-    let IsLogin=store.state.myself.IsLogin;
+    }  
     if(!IsLogin&&(topath.includes('myself')||topath.includes('admin'))){  //没有登录时
         Message.error('请先登录');
+        next('/');
         return;
     }
     let power=store.state.myself.power;  //权限

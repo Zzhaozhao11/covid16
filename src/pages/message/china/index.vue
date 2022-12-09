@@ -144,7 +144,6 @@ export default {
         var myChart = this.$echarts.init(chartDom);
         // 获取数据
         this.$http.reqGetWorldMapMes().then(result => {
-          
           let res=result.data;
           this.total = res.data.chinaTotal.total
           this.today = res.data.chinaTotal.today

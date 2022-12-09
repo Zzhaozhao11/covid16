@@ -123,7 +123,6 @@ export default {
         // 获取数据
         this.$http.reqGetWorldMapMes().then(result => {
           let res = result.data;
-          console.log(res.data.areaTree[2].children[23]);
           this.total = res.data.areaTree[2].children[23].total
           this.today = res.data.areaTree[2].children[23].today
           this.extData = res.data.areaTree[2].children[23].extData

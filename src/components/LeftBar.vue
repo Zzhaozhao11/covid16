@@ -40,7 +40,7 @@
       <el-menu-item index="1-5" @click="ChangeRoutersiwang">死亡管理</el-menu-item>
     </div>
 
-   
+
   </el-submenu>
   
 
@@ -69,7 +69,7 @@ export default {
           confirmButtonText: '确认退出',
           cancelButtonText: '放弃'
         }).then(()=>{
-          this.$store.commit('myself/EXITLOGIN');  //修改vuex仓库
+          this.$store.commit('myself/EXITLOGIN');  //退出登录
           this.$router.replace({
             name:'china'
           })  
