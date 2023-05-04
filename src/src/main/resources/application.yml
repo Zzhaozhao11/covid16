@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    name: users
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/zyz_db?useUnicode=true&characterEncoding=UTF8&useSSL=false
+    username: root
+    password: root1234
+
+server:
+  port: 8090

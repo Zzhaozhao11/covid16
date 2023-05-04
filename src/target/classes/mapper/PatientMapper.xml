@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tust.mapper.PatientMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tust.entity.Patient">
+        <id column="basic_id" property="basicId" />
+        <result column="source" property="source"/>
+        <result column="in_date" property="inDate" />
+        <result column="sympotom" property="symptoms" />
+        <result column="condition" property="condition" />
+        <result column="comments" property="comments" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        basic_id, person_id, gender, house_address, in_date, sympotom, condition, comments
+    </sql>
+    <insert id="addManage">
+        insert into patient values (#{basicId} , #{source},#{inDate} , #{symptoms} , #{condition} , #{comments}  , #{hospital})
+    </insert>
+
+    <select id="selectAllPatient" resultType="com.tust.entity.Model">
+        select  b.id,b.name , b.person_id , b.age , b.gender , b.house_address , p.source,p.in_date
+        from basic b , patient p
+        where b.id IN (select p.basic_id from patient)
+          and   b.id not in (select basic_id from dead)
+          and  b.id not in (select basic_id from cure)
+          and  b.id not in (select basic_id from information)
+        or
+          b.id  IN (select p.basic_id from patient)
+          and  b.id not in (select basic_id from dead)
+          and  b.id  not in (select basic_id from cure)
+          and b.id   in (select basic_id from information)
+    </select>
+    <select id="getManage" resultType="com.tust.entity.Patient">
+        select * from patient where basic_id=#{id}
+    </select>
+    <select id="selectPatientByName" resultType="com.tust.entity.Model">
+        select b.id, b.name , b.person_id , b.age , b.gender , b.house_address , p.source,p.in_date
+        from basic b , patient p
+        where b.id IN (select p.basic_id from patient)
+          and   b.id not in (select basic_id from dead)
+          and  b.id not in (select basic_id from cure)
+          and  b.id not in (select basic_id from information)
+          and b.name like  '%${name}%'
+        or
+          b.id  IN (select p.basic_id from patient)
+          and  b.id not in (select basic_id from dead)
+          and  b.id  not in (select basic_id from cure)
+          and b.id   in (select basic_id from information)
+          and b.name like  '%${name}%'
+    </select>
+
+</mapper>

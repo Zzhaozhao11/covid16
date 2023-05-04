@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tust.mapper.BasicMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tust.entity.Basic">
+        <id column="Id" property="id" />
+        <result column="name" property="name" />
+        <result column="person_id" property="personId" />
+        <result column="age" property="age" />
+        <result column="gender" property="gender" />
+        <result column="house_address" property="houseAddress" />
+        <result column="phone" property="phone" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        Basic_id, name, person_id, age, gender, house_address, phone
+    </sql>
+    <insert id="addBase">
+        insert into basic values ( #{id}, #{name} , #{personId} , #{age} , #{gender} ,#{houseAddress} ,#{phone})
+    </insert>
+    <select id="getBase" resultType="com.tust.entity.Basic">
+        select * from  basic where id = #{id}
+    </select>
+
+
+
+</mapper>

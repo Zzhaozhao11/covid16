@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tust.mapper.CureMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tust.entity.Cure">
+        <result column="basic_id" property="basicId" />
+        <result column="out_date" property="outDate" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        basic_id, out_date, status
+    </sql>
+    <select id="selectAllCure" resultType="com.tust.entity.Model">
+        select b.id, b.name , b.age  , b.gender , b.house_address , c.out_date,c.status,b.person_id
+        from basic b , patient p , cure c
+        where  b.id  IN (select p.basic_id from patient)
+            and  b.id  not in (select basic_id from dead)
+            and  b.id  in (select c.basic_id from cure)
+            and  b.id  not in (select information.basic_id from information)
+           or
+            b.id  IN (select p.basic_id from patient)
+            and  b.id  not in (select basic_id from dead)
+            and  b.id  in (select c.basic_id from cure)
+            and b.id   in (select basic_id from information)
+
+    </select>
+    <select id="getCureMessage" resultType="com.tust.entity.Model">
+        select b.id, p.source , p.in_date, p.condition,p.symptoms,c.out_date,p.hospital,p.comments
+        from basic b , patient p , cure c
+        where  b.id  IN (select p.basic_id from patient)
+          and  b.id  not in (select basic_id from dead)
+          and  b.id  in (select c.basic_id from cure)
+          and  b.id  not in (select basic_id from information)
+          and b.id = #{id}
+        or
+          b.id  IN (select p.basic_id from patient)
+          and  b.id  not in (select basic_id from dead)
+          and  b.id  in (select c.basic_id from cure)
+          and b.id   in (select basic_id from information)
+          and b.id = #{id}
+    </select>
+    <select id="selectAllCureByName" resultType="com.tust.entity.Model">
+        select b.id, b.name , b.age  , b.gender , b.house_address , c.out_date,c.status,b.person_id
+        from basic b , patient p , cure c
+        where  b.id  IN (select p.basic_id from patient)
+            and  b.id  not in (select basic_id from dead)
+            and  b.id  in (select c.basic_id from cure)
+            and  b.id  not in (select information.basic_id from information)
+            and  b.name like  '%${name}%'
+           or
+                b.id  IN (select p.basic_id from patient)
+            and  b.id  not in (select basic_id from dead)
+            and  b.id  in (select c.basic_id from cure)
+            and b.id   in (select basic_id from information)
+            and  b.name like  '%${name}%';
+    </select>
+
+</mapper>

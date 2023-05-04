@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tust.mapper.ClockMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tust.entity.Clock">
+        <id column="id" property="Id" />
+        <result column="name" property="name" />
+        <result column="location" property="location" />
+        <result column="health" property="health" />
+        <result column="temperature" property="temperature" />
+        <result column="clock_date" property="clockDate" />
+        <result column="danger" property="danger" />
+        <result column="contact" property="contact" />
+        <result column="comments" property="comments" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, location, health, temperature, clock_date, danger, contact, comments
+    </sql>
+
+</mapper>

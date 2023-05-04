@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tust.mapper.DeadMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tust.entity.Dead">
+        <result column="basic_id" property="basicId" />
+        <result column="dead_date" property="deadDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        basic_id, dead_date
+    </sql>
+    <select id="selectAllDead" resultType="com.tust.entity.Model">
+        select  b.id , b.name , b.age  , b.gender ,d.dead_date,b.person_id,b.house_address
+        from basic b , dead  d
+        where  b.id  IN (select patient.basic_id from patient)
+          and   b.id  in (select d.basic_id from dead)
+          and   b.id not in (select cure.basic_id from cure)
+          and  b.id not in (select information.basic_id from information)
+        or
+          b.id  IN (select patient.basic_id from patient)
+          and  b.id  in (select d.basic_id from dead)
+          and  b.id  not in (select cure.basic_id from cure)
+          and b.id   in (select information.basic_id from information)
+    </select>
+    <select id="selectDeadByName" resultType="com.tust.entity.Model">
+        select b.id, b.name , b.age  , b.gender ,d.dead_date,b.person_id,b.house_address
+        from basic b , dead  d
+        where  b.id  IN (select patient.basic_id from patient)
+          and   b.id  in (select d.basic_id from dead)
+          and   b.id not in (select cure.basic_id from cure)
+          and  b.id not in (select information.basic_id from information)
+          and b.name like  '%${name}%'
+        or
+          b.id  IN (select patient.basic_id from patient)
+          and  b.id  in (select d.basic_id from dead)
+          and  b.id  not in (select cure.basic_id from cure)
+          and b.id   in (select information.basic_id from information)
+          and b.name like  '%${name}%'
+    </select>
+
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tust.mapper.InformationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tust.entity.Information">
+        <result column="basic_id" property="basicId" />
+        <result column="source" property="source" />
+        <result column="divide_address" property="divideAddress" />
+        <result column="divide_date" property="divideDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        basic_id, person_id, gender, divide_address, divide_date
+    </sql>
+    <insert id="addInformation">
+        insert into information values (#{basicId} , #{source} , #{divideAddress} ,#{divideDate})
+    </insert>
+    <delete id="addEnd">
+        delete from information where basic_id = #{Id}
+    </delete>
+    <select id="selectAllInformationService" resultType="com.tust.entity.Model">
+        select b.id, b.name , b.person_id  , b.gender ,i.divide_address, i.divide_date
+        from basic b , information  i
+        where b.id not IN (select patient.basic_id from patient)
+          and   b.id not in (select dead.basic_id from dead)
+          and  b.id not in (select cure.basic_id from cure)
+          and  b.id  in (select i.basic_id from information)
+    </select>
+    <select id="getInformationMessage" resultType="com.tust.entity.Information">
+        select  source ,divide_address , divide_date
+        from information
+        where basic_id = #{basicId}
+    </select>
+
+</mapper>
